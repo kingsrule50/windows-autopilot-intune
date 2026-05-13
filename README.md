@@ -31,6 +31,72 @@ The objective of this project was to build a secure, cloud-managed Windows deplo
 | VMware Workstation Pro | Virtualization platform |
 | Windows 11 Pro VM | Autopilot target endpoint |
 | Microsoft Intune | Endpoint management |
+# 🚀 Windows Autopilot & Microsoft Intune Deployment Lab# 🚀 Windows Autopilot & Microsoft Intune Deployment Lab
+
+![Status](https://img.shields.io/badge/status-completed-brightgreen)
+![Platform](https://img.shields.io/badge/platform-Microsoft%20Intune-blue)
+![Focus](https://img.shields.io/badge/focus-Windows%20Autopilot-purple)
+![Security](https://img.shields.io/badge/security-Entra%20ID-orange)
+
+# 📌 Project Overview
+
+This project demonstrates a complete Windows Autopilot and Microsoft Intune deployment workflow within a segmented enterprise lab environment.
+
+The lab simulates a real-world enterprise endpoint onboarding process using:
+
+- Microsoft Intune
+- Microsoft Entra ID
+- Windows Autopilot
+- MFA Enforcement
+- Windows Hello for Business
+- Device Compliance Validation
+- Endpoint Provisioning
+- Network Segmentation
+
+The objective of this project was to build a secure, cloud-managed Windows deployment workflow aligned with modern enterprise identity and endpoint management practices.
+
+---
+
+# 🏗️ Lab Environment
+
+| Component | Purpose |
+|---|---|
+| VMware Workstation Pro | Virtualization platform |
+| Windows 11 Pro VM | Autopilot target endpoint |
+| Microsoft Intune | Endpoint management |
+
+
+![Status](https://img.shields.io/badge/status-completed-brightgreen)
+![Platform](https://img.shields.io/badge/platform-Microsoft%20Intune-blue)
+![Focus](https://img.shields.io/badge/focus-Windows%20Autopilot-purple)
+![Security](https://img.shields.io/badge/security-Entra%20ID-orange)
+
+# 📌 Project Overview
+
+This project demonstrates a complete Windows Autopilot and Microsoft Intune deployment workflow within a segmented enterprise lab environment.
+
+The lab simulates a real-world enterprise endpoint onboarding process using:
+
+- Microsoft Intune
+- Microsoft Entra ID
+- Windows Autopilot
+- MFA Enforcement
+- Windows Hello for Business
+- Device Compliance Validation
+- Endpoint Provisioning
+- Network Segmentation
+
+The objective of this project was to build a secure, cloud-managed Windows deployment workflow aligned with modern enterprise identity and endpoint management practices.
+
+---
+
+# 🏗️ Lab Environment
+
+| Component | Purpose |
+|---|---|
+| VMware Workstation Pro | Virtualization platform |
+| Windows 11 Pro VM | Autopilot target endpoint |
+| Microsoft Intune | Endpoint management |
 | Microsoft Entra ID | Identity and authentication |
 | Microsoft Authenticator | MFA approval |
 | Windows Hello | Passwordless authentication |
@@ -180,7 +246,15 @@ The Windows device successfully appeared within the Windows Autopilot devices in
 
 ---
 
-## 11. Autopilot Profile Creation
+## 11. Device Added to Deployment Group
+
+The enrolled Windows endpoint was manually added to the Autopilot deployment target group for profile assignment and policy deployment.
+
+![Device Added to Group](screenshots/autopilot-device-added-to-group.png)
+
+---
+
+## 12. Autopilot Profile Creation
 
 An Autopilot deployment profile was created and configured for enterprise deployment.
 
@@ -188,7 +262,7 @@ An Autopilot deployment profile was created and configured for enterprise deploy
 
 ---
 
-## 12. Group Assignment
+## 13. Group Assignment
 
 The deployment profile was assigned to the target deployment group.
 
@@ -196,7 +270,7 @@ The deployment profile was assigned to the target deployment group.
 
 ---
 
-## 13. Device Group Membership
+## 14. Device Group Membership
 
 The enrolled endpoint successfully appeared within the assigned deployment group.
 
@@ -204,7 +278,7 @@ The enrolled endpoint successfully appeared within the assigned deployment group
 
 ---
 
-## 14. OOBE Deployment Experience
+## 15. OOBE Deployment Experience
 
 The device entered the Windows Autopilot Out-of-Box Experience (OOBE) deployment process.
 
@@ -212,7 +286,7 @@ The device entered the Windows Autopilot Out-of-Box Experience (OOBE) deployment
 
 ---
 
-## 15. Organization Sign-In
+## 16. Organization Sign-In
 
 The user authenticated using organizational credentials during deployment.
 
@@ -220,7 +294,7 @@ The user authenticated using organizational credentials during deployment.
 
 ---
 
-## 16. Network Connection Validation
+## 17. Network Connection Validation
 
 Network connectivity was validated during the provisioning workflow across segmented VMware host-only networks.
 
@@ -228,7 +302,7 @@ Network connectivity was validated during the provisioning workflow across segme
 
 ---
 
-## 17. Device Provisioning
+## 18. Device Provisioning
 
 Windows Autopilot automatically provisioned the endpoint using assigned cloud policies.
 
@@ -236,7 +310,7 @@ Windows Autopilot automatically provisioned the endpoint using assigned cloud po
 
 ---
 
-## 18. Windows Hello Enrollment
+## 19. Windows Hello Enrollment
 
 Windows Hello for Business enrollment was initiated.
 
@@ -244,7 +318,7 @@ Windows Hello for Business enrollment was initiated.
 
 ---
 
-## 19. Windows Hello PIN Setup
+## 20. Windows Hello PIN Setup
 
 The user configured a secure Windows Hello PIN.
 
@@ -252,7 +326,7 @@ The user configured a secure Windows Hello PIN.
 
 ---
 
-## 20. Windows Hello Completion
+## 21. Windows Hello Completion
 
 Windows Hello for Business enrollment completed successfully.
 
@@ -260,7 +334,15 @@ Windows Hello for Business enrollment completed successfully.
 
 ---
 
-## 21. Intune Device Inventory
+## 22. Windows Autopilot Deployment Complete
+
+The Windows 11 endpoint successfully completed Autopilot provisioning and loaded into the fully configured enterprise desktop environment.
+
+![Deployment Complete](screenshots/windows-autopilot-deployment-complete.png)
+
+---
+
+## 23. Intune Device Inventory
 
 The endpoint appeared within the Microsoft Intune managed device inventory.
 
@@ -268,7 +350,7 @@ The endpoint appeared within the Microsoft Intune managed device inventory.
 
 ---
 
-## 22. Device Compliance Validation
+## 24. Device Compliance Validation
 
 The endpoint successfully passed Intune compliance validation.
 
@@ -276,7 +358,7 @@ The endpoint successfully passed Intune compliance validation.
 
 ---
 
-## 23. Windows Recovery & Reset Workflow
+## 25. Windows Recovery & Reset Workflow
 
 Remote reset and recovery operations were demonstrated for enterprise device lifecycle management.
 
