@@ -75,12 +75,14 @@ The deployment covered the full device lifecycle:
 │  ┌──────────────────────────────────────────────────────────────────┐  │
 │  │                   Windows 11 Pro VM                              │  │
 │  │                                                                  │  │
-│  │  1. PowerShell → Extract Hardware Hash → Export CSV             │  │
-│  │  2. Upload CSV to Intune → Device Registered                    │  │
-│  │  3. OOBE → Org Sign-In → MFA Approval → Entra Join             │  │
-│  │  4. Autopilot Profile Applied → Policies Deployed               │  │
-│  │  5. Windows Hello PIN Setup → Provisioning Complete             │  │
-│  │  6. Intune Inventory → Compliance Validated ✅                  │  │
+│  │  1. Validate Windows 11 version — confirm prerequisites met     │  │
+│  │  2. PowerShell → Extract Hardware Hash → Export CSV             │  │
+│  │  3. Upload CSV to Intune → Device Registered in Autopilot      │  │
+│  │  4. Create Deployment Profile → Assign to Group → Add Device   │  │
+│  │  5. OOBE → Org Sign-In → MFA Approval → Entra Join            │  │
+│  │  6. Autopilot Profile Applied → Policies Deployed               │  │
+│  │  7. Windows Hello PIN Setup → Provisioning Complete             │  │
+│  │  8. Intune Inventory → Compliance Validated ✅                  │  │
 │  └──────────────────────────────────────────────────────────────────┘  │
 │                                                                         │
 │  Network Segments:  vmnet3 · 192.168.10.0/24  (Internal/Management)   │
@@ -124,15 +126,23 @@ Three isolated host-only networks were configured in VMware Virtual Network Edit
 
 ---
 
-### Step 2 — Windows Device Sign-In to Entra ID
+### Step 2 — Windows 11 Version Validated
 
-The Windows 11 VM was connected to the Microsoft Entra ID tenant using an organisational account. This is the first step of the cloud identity join — the device authenticates against Entra before Intune can manage it.
+Windows 11 version and build details were confirmed as the first action on the endpoint — before any enrollment or script execution. Autopilot requires a minimum Windows 10/11 build, so this prerequisite check prevents registration failures down the line.
+
+![Windows 11 version validation](screenshots/windows11-version-validation.png)
+
+---
+
+### Step 3 — Windows Device Sign-In to Entra ID
+
+With the OS version confirmed, the Windows 11 VM was connected to the Microsoft Entra ID tenant using an organisational account. This is the beginning of the cloud identity join — the device authenticates against Entra before Intune can manage it.
 
 ![Entra ID device sign-in](screenshots/entra-id-device-signin.png)
 
 ---
 
-### Step 3 — MFA Authentication Approved via Microsoft Authenticator
+### Step 4 — MFA Authentication Approved via Microsoft Authenticator
 
 Microsoft Authenticator was used to approve the push notification during Entra ID sign-in. MFA is enforced as a conditional access requirement — no device joins the tenant without a second factor.
 
@@ -140,19 +150,11 @@ Microsoft Authenticator was used to approve the push notification during Entra I
 
 ---
 
-### Step 4 — Device Successfully Joined to Entra ID
+### Step 5 — Device Successfully Joined to Entra ID
 
 The Windows 11 VM confirmed successful join to the Microsoft Entra ID tenant. From this point the device has a cloud identity and is visible in the Entra admin centre.
 
 ![Entra ID join success](screenshots/entra-id-device-join-success.png)
-
----
-
-### Step 5 — Windows 11 Version Validated
-
-Windows 11 version and build details were confirmed prior to Autopilot registration. Autopilot requires a minimum Windows 10/11 build — validating this before generating the hardware hash avoids registration failures.
-
-![Windows 11 version validation](screenshots/windows11-version-validation.png)
 
 ---
 
@@ -206,25 +208,25 @@ The Windows 11 VM appeared in the Windows Autopilot devices list inside Intune, 
 
 ---
 
-### Step 11 — Device Added to Deployment Group
+### Step 11 — Autopilot Deployment Profile Created
 
-The registered device was added to the Autopilot target deployment group. Group membership is what links a device to a specific deployment profile — without this, no profile gets assigned during OOBE.
-
-![Device added to deployment group](screenshots/autopilot-device-added-to-group.png)
-
----
-
-### Step 12 — Autopilot Deployment Profile Created
-
-An Autopilot deployment profile was created in Intune and configured for enterprise self-deploying mode. The profile controls what the user sees during OOBE — including skipping manual setup steps and enforcing the organisational sign-in.
+With the device registered, an Autopilot deployment profile was created in Intune and configured for enterprise self-deploying mode. The profile is created before the device is added to any group — it defines the deployment settings that will be applied during OOBE.
 
 ![Autopilot profile creation](screenshots/autopilot-profile-creation.png)
 
 ---
 
+### Step 12 — Device Added to Deployment Group
+
+The registered device was added to the Autopilot target deployment group. The group is the bridge between the device and the deployment profile — a device must be in the group for the profile to apply during OOBE.
+
+![Device added to deployment group](screenshots/autopilot-device-added-to-group.png)
+
+---
+
 ### Step 13 — Profile Assigned to Deployment Group
 
-The deployment profile was assigned to the target group containing the registered device. From this point, any device in the group that enters OOBE will receive this profile automatically.
+The deployment profile was assigned to the target group. From this point, any device in the group that enters OOBE will receive this profile automatically — no manual configuration required.
 
 ![Profile group assignment](screenshots/autopilot-profile-group-assignment.png)
 
@@ -232,7 +234,7 @@ The deployment profile was assigned to the target group containing the registere
 
 ### Step 14 — Device Confirmed in Group Membership
 
-The enrolled endpoint was confirmed as a member of the assigned deployment group. Group membership verified before initiating OOBE to ensure the profile assignment was active.
+The enrolled endpoint was confirmed as a member of the assigned deployment group. Group membership was verified before initiating OOBE to ensure the profile assignment was active and would be picked up during provisioning.
 
 ![Device group membership confirmed](screenshots/autopilot-device-group-membership.png)
 
@@ -385,17 +387,17 @@ windows-autopilot-intune/
 ├── README.md
 └── screenshots/
     ├── vmware-network-segmentation.png
+    ├── windows11-version-validation.png
     ├── entra-id-device-signin.png
     ├── mfa-authenticator-approval.png
     ├── entra-id-device-join-success.png
-    ├── windows11-version-validation.png
     ├── install-get-windowsautopilotinfo-script.png
     ├── generate-autopilot-hardware-hash.png
     ├── upload-autopilot-hardware-hash-csv.png
     ├── autopilot-csv-validation-success.png
     ├── autopilot-device-registration-success.png
-    ├── autopilot-device-added-to-group.png
     ├── autopilot-profile-creation.png
+    ├── autopilot-device-added-to-group.png
     ├── autopilot-profile-group-assignment.png
     ├── autopilot-device-group-membership.png
     ├── autopilot-oobe-configuration.png
